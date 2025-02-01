@@ -11,6 +11,9 @@ local function onTouch(hit)
         part.BrickColor = BrickColor.Red()  -- zmienia kolor klocka na czerwony
     else
         print("To nie jest postać gracza.")  -- Zgłasza, jeśli nie to postać
+
+        wait(5)  -- Czekamy 5 sekund
+        part.BrickColor = BrickColor.Gray()
     end
 end
 
