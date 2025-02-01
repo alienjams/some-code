@@ -1,20 +1,28 @@
-local part = script.Parent  -- odwołanie do klocka, do którego dodany jest skrypt
+local player = game.Players.LocalPlayer
+local camera = game.Workspace.CurrentCamera
+local userInputService = game:GetService("UserInputService")
 
-local function onTouch(hit)
-	print("Coś dotknęło klocek!")  -- Logujemy, że coś dotknęło klocek
+local firstPersonView = false  -- Zmienna przechowująca stan widoku (pierwsza osoba / trzecia osoba)
 
-	local character = hit.Parent
-	local humanoid = character:FindFirstChild("Humanoid")
-
-	if humanoid then  -- jeśli to postać gracza
-		print("Gracz dotknął klocek!")  -- Logujemy, że to postać gracza
-		part.BrickColor = BrickColor.Red()  -- zmienia kolor klocka na czerwony
-
-		-- Po 5 sekundach zmieniamy kolor na szary
-		delay(5, function()  -- Używamy delay, żeby poczekać 5 sekund przed przywróceniem koloru
-			part.BrickColor = BrickColor.Gray()  -- Przywracamy kolor do szarości
-		end)
+-- Funkcja przełączająca widok
+local function toggleView()
+	if firstPersonView then
+		camera.CameraSubject = player.Character.Humanoid
+		camera.FieldOfView = 70 -- Domyślny FOV dla widoku z trzeciej osoby
+	else
+		camera.CameraSubject = player.Character.Head
+		camera.FieldOfView = 70 -- Możesz dostosować FOV, jeśli chcesz
 	end
+	firstPersonView = not firstPersonView
 end
 
-part.Touched:Connect(onTouch)
+-- Nasłuchiwanie na naciśnięcie przycisku "F" w celu przełączenia widoku
+userInputService.InputBegan:Connect(function(input, gameProcessedEvent)
+	if gameProcessedEvent then return end
+	if input.KeyCode == Enum.KeyCode.F then
+		toggleView()
+	end
+end)
+
+-- Ustawienie początkowego widoku (z trzeciej osoby)
+camera.CameraSubject = player.Character.Humanoid
