@@ -1,20 +1,20 @@
 local part = script.Parent  -- odwołanie do klocka, do którego dodany jest skrypt
 
 local function onTouch(hit)
-    print("Coś dotknęło klocek!")  -- Logujemy, że coś dotknęło klocek
-    
-    local character = hit.Parent
-    local humanoid = character:FindFirstChild("Humanoid")
-    
-    if humanoid then  -- jeśli to postać gracza
-        print("Gracz dotknął klocek!")  -- Logujemy, że to postać gracza
-        part.BrickColor = BrickColor.Red()  -- zmienia kolor klocka na czerwony
-    else
-        print("To nie jest postać gracza.")  -- Zgłasza, jeśli nie to postać
+	print("Coś dotknęło klocek!")  -- Logujemy, że coś dotknęło klocek
 
-        wait(5)  -- Czekamy 5 sekund
-        part.BrickColor = BrickColor.Gray()
-    end
+	local character = hit.Parent
+	local humanoid = character:FindFirstChild("Humanoid")
+
+	if humanoid then  -- jeśli to postać gracza
+		print("Gracz dotknął klocek!")  -- Logujemy, że to postać gracza
+		part.BrickColor = BrickColor.Red()  -- zmienia kolor klocka na czerwony
+
+		-- Po 5 sekundach zmieniamy kolor na szary
+		delay(5, function()  -- Używamy delay, żeby poczekać 5 sekund przed przywróceniem koloru
+			part.BrickColor = BrickColor.Gray()  -- Przywracamy kolor do szarości
+		end)
+	end
 end
 
 part.Touched:Connect(onTouch)
